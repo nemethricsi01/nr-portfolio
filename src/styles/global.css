@@ -68,6 +68,10 @@ h1 {
   color: var(--fg);
 }
 
+@media (max-width: 540px) {
+  :root { --pad: 1rem; }
+}
+
 .wrap {
   max-width: var(--max-w);
   margin: 0 auto;
