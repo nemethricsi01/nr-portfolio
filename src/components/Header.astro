@@ -1,0 +1,111 @@
+---
+const nav = [
+  { href: '/about',    label: '01 ABOUT'    },
+  { href: '/projects', label: '02 PROJECTS' },
+  { href: '/#contact', label: '03 CONTACT'  },
+];
+
+const path = Astro.url.pathname;
+---
+
+<header>
+  <div class="wrap inner">
+    <a href="/" class="logo" aria-label="Home">
+      <svg viewBox="0 0 28.35 28.35" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="currentColor" d="M3.69,23.5h2.8c0-3.02,0-6.03,0-9.05c0.57,0.62,1.59,1.56,3.12,2.21c1.05,0.45,1.99,0.62,2.69,0.69c0,2.05,0,4.1,0,6.15h2.8v-8.83c-0.41,0.06-3.84,0.47-6.41-2.18C6.62,10.38,6.5,7.73,6.49,7.14h-2.8V23.5z"/>
+        <path fill="currentColor" d="M21.94,14.67c0.54,0.5,1.29,1.32,1.91,2.51c0.71,1.36,0.94,2.62,1.03,3.4v2.92h-2.69c0.04-0.39,0.36-4.52-2.69-7.11c-1.72-1.46-3.64-1.68-4.41-1.72v-2.88h8.59c0.07-0.1,0.29-0.39,0.31-0.82c0.02-0.51-0.25-0.86-0.31-0.95h-8.59V7.14h11.39c0.29,0.78,0.68,2.04,0.69,3.64c0.02,1.73-0.39,3.09-0.69,3.89H21.94z"/>
+      </svg>
+    </a>
+
+    <nav>
+      {nav.map(item => (
+        <a
+          href={item.href}
+          class:list={['nav-link', { active: path.startsWith(item.href.split('#')[0]) && item.href !== '/#contact' }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="status">
+      <span class="dot"></span>
+      <span class="mono status-text">AVAILABLE</span>
+    </div>
+  </div>
+</header>
+
+<style>
+header {
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  height: 52px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--fg);
+}
+
+.logo svg {
+  height: 30px;
+  width: 30px;
+  display: block;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--fg);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2C7E50;
+  flex-shrink: 0;
+}
+
+.status-text {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: #2C7E50;
+}
+
+@media (max-width: 600px) {
+  nav { gap: 1rem; }
+  .status { display: none; }
+}
+</style>

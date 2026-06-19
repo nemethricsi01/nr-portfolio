@@ -1,0 +1,345 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects.filter(p => p.data.featured).slice(0, 3);
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <h1>RICHARD<br />NEMETH.</h1>
+        <div class="hero-photo-wrap">
+          <img src="/ft_cv.png" alt="Richard Nemeth" />
+        </div>
+      </div>
+
+      <div class="hero-band">
+        <div class="band-cell">
+          <span class="label">ROLE</span>
+          <span class="band-val mono">EMBEDDED SYSTEMS<br />ENGINEER</span>
+        </div>
+        <div class="band-cell">
+          <span class="label">STATUS</span>
+          <span class="band-val mono" style="color: #2C7E50;">AVAILABLE</span>
+        </div>
+        <div class="band-cell">
+          <span class="label">LOCATION</span>
+          <span class="band-val mono">BUDAPEST<br />47°N · 19°E</span>
+        </div>
+        <div class="band-cell">
+          <span class="label">FOCUS</span>
+          <span class="band-val mono">EMBEDDED / PCB</span>
+        </div>
+        <div class="band-cell band-actions">
+          <a href="/projects" class="btn-primary mono">VIEW PROJECTS →</a>
+          <a href="/about"    class="btn-ghost   mono">ABOUT ME</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services">
+    <div class="wrap">
+      <div class="services-grid">
+        <div class="service">
+          <span class="mono idx">01</span>
+          <h3>PCB DESIGN</h3>
+          <p class="muted">Schematic design, PCB layout, DFM, signal integrity</p>
+        </div>
+        <div class="service">
+          <span class="mono idx">02</span>
+          <h3>FIRMWARE DEVELOPMENT</h3>
+          <p class="muted">Embedded C/C++, drivers, RTOS, bootloaders</p>
+        </div>
+        <div class="service">
+          <span class="mono idx">03</span>
+          <h3>HARDWARE DEVELOPMENT</h3>
+          <p class="muted">System architecture, component selection, prototyping</p>
+        </div>
+        <div class="service">
+          <span class="mono idx">04</span>
+          <h3>CONSULTING</h3>
+          <p class="muted">Architecture review, technical audit, product strategy</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  {featured.length > 0 && (
+    <section class="featured ruled-top">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="label">SELECTED PROJECTS</span>
+          <a href="/projects" class="label view-all">VIEW ALL PROJECTS →</a>
+        </div>
+        <div class="projects-grid">
+          {featured.map(p => (
+            <ProjectCard
+              slug={p.slug}
+              title={p.data.title}
+              platform={p.data.platform}
+              status={p.data.status}
+              date={p.data.date}
+              summary={p.data.summary}
+              tags={p.data.tags}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+/* Hero */
+.hero {
+  padding: 2rem 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(3rem - 1px),
+    rgba(24, 20, 16, 0.05) calc(3rem - 1px),
+    rgba(24, 20, 16, 0.05) 3rem
+  );
+  pointer-events: none;
+}
+
+.hero .wrap { position: relative; }
+
+.hero-top {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: start;
+  gap: 3rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 9vw, 7rem);
+  font-weight: normal;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  margin-bottom: 0;
+}
+
+/* Bauhaus offset photo */
+.hero-photo-wrap {
+  position: relative;
+  width: 100%;
+  transform: rotate(90deg);
+  transform-origin: center center;
+}
+
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: -15px;
+  bottom: -15px;
+  background: var(--accent);
+  opacity: 0.22;
+}
+
+.hero-photo-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  border: 1px solid var(--border);
+
+}
+
+/* Hero band — hardware spec plate */
+.hero-band {
+  display: grid;
+  grid-template-columns: repeat(4, auto) 1fr;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.band-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.85rem 1.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.band-cell:last-child {
+  border-right: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.band-val {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+
+.btn-primary,
+.btn-ghost {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.65rem 1.25rem;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--fg);
+  color: var(--bg);
+  border: 1px solid var(--fg);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border-light);
+  color: var(--muted);
+}
+
+.btn-ghost:hover {
+  border-color: var(--fg);
+  color: var(--fg);
+}
+
+/* Services */
+.services { padding: 0; }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.service {
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.idx {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--border-light);
+  margin-bottom: 1.25rem;
+}
+
+.service h3 {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.service p {
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* Featured */
+.featured { padding: 3rem 0 4rem; }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.view-all {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.view-all:hover { color: var(--fg); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.projects-grid > :global(.card) {
+  border-right: none;
+  border-bottom: none;
+}
+
+.projects-grid > :global(.card:not(:last-child)) {
+  border-right: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero-band { grid-template-columns: repeat(2, 1fr); }
+  .band-cell:nth-child(2) { border-right: none; }
+  .band-cell:nth-child(3) { border-top: 1px solid var(--border); }
+  .band-cell:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+  .band-cell:last-child {
+    grid-column: span 2;
+    border-top: 1px solid var(--border);
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid { grid-template-columns: 1fr; }
+  .projects-grid > :global(.card:not(:last-child)) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 540px) {
+  .hero { padding: 2rem 0 0; }
+  .hero-top { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+  .hero-photo-wrap { width: clamp(10.5rem, 45vw, 16.5rem); }
+  .hero-band { grid-template-columns: 1fr; }
+  .band-cell,
+  .band-cell:nth-child(2),
+  .band-cell:nth-child(3),
+  .band-cell:nth-child(4) {
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .band-cell:last-child {
+    grid-column: 1;
+    border-bottom: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border-top: none;
+  }
+  .services-grid { grid-template-columns: 1fr; }
+}
+</style>

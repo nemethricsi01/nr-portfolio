@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+projects.sort((a, b) => {
+  const parse = (s: string) => {
+    const [d, m, y] = s.split('.').map(Number);
+    return new Date(y, m - 1, d).getTime();
+  };
+  return parse(b.data.date) - parse(a.data.date);
+});
+
+const statusColors: Record<string, string> = {
+  PRODUCTION:  '#2C7E50',
+  TESTING:     '#D4840C',
+  DEVELOPMENT: '#1F4B8A',
+  PROTOTYPE:   '#7C7268',
+};
+---
+
+<BaseLayout
+  title="Projects — Richard Nemeth"
+  description="Hardware and embedded systems projects by Richard Nemeth."
+>
+  <div class="breadcrumb ruled-bottom">
+    <div class="wrap">
+      <span class="label"><a href="/">HOME</a> / PROJECTS</span>
+    </div>
+  </div>
+
+  <section class="page-header">
+    <div class="wrap">
+      <h1>PROJECTS.</h1>
+      <div class="accent-line"></div>
+      <p class="desc">Hardware and embedded systems work — PCB designs, firmware, and full product development.</p>
+    </div>
+  </section>
+
+  <section class="list-section ruled-top">
+    <div class="wrap">
+      <div class="table-head mono label">
+        <span>ID</span>
+        <span>PROJECT</span>
+        <span>PLATFORM</span>
+        <span>STATUS</span>
+        <span>DATE</span>
+        <span></span>
+      </div>
+
+      <div class="project-list">
+        {projects.map((p, i) => (
+          <a href={`/projects/${p.slug}`} class="row">
+            <span class="mono label idx">P-{String(i + 1).padStart(4, '0')}</span>
+            <span class="name">{p.data.title}</span>
+            <span class="mono label">{p.data.platform}</span>
+            <span
+              class="mono label"
+              style={`color: ${statusColors[p.data.status] ?? '#7C7268'}`}
+            >
+              {p.data.status}
+            </span>
+            <span class="mono label">{p.data.date}</span>
+            <span class="mono arrow">→</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="count mono label">{projects.length} PROJECT{projects.length !== 1 ? 'S' : ''}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.breadcrumb { padding: 0.6rem 0; }
+.breadcrumb a { color: var(--muted); }
+
+.page-header { padding: 4rem 0 2.5rem; }
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1rem;
+}
+
+.desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  max-width: 52ch;
+  line-height: 1.7;
+}
+
+.list-section { padding: 0 0 4rem; }
+
+.table-head {
+  display: grid;
+  grid-template-columns: 6rem 1fr 10rem 10rem 8rem 2rem;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: rgba(26, 26, 26, 0.04);
+  border-bottom: 1px solid var(--border);
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 6rem 1fr 10rem 10rem 8rem 2rem;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+
+.row:hover { background: rgba(212, 132, 12, 0.05); }
+.row:hover .arrow { transform: translateX(4px); }
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.arrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  transition: transform 0.15s;
+}
+
+.count {
+  margin-top: 1rem;
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .table-head { display: none; }
+  .row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 0.25rem;
+  }
+  .name  { grid-column: 1; grid-row: 1; }
+  .arrow { grid-column: 2; grid-row: 1; }
+  .idx   { grid-column: 1; grid-row: 2; }
+  .row > span:nth-child(3),
+  .row > span:nth-child(4),
+  .row > span:nth-child(5) { display: none; }
+}
+</style>

@@ -1,0 +1,110 @@
+---
+---
+
+<footer id="contact">
+  <div class="wrap inner">
+    <div class="col identity">
+      <span class="mono logo-text">NR</span>
+      <p class="mono small muted">
+        RICHARD NEMETH<br />
+        EMBEDDED SYSTEMS ENGINEER<br />
+        BUDAPEST, HUNGARY
+      </p>
+    </div>
+
+    <div class="col">
+      <span class="label">NAVIGATION</span>
+      <nav>
+        <a href="/about">ABOUT</a>
+        <a href="/projects">PROJECTS</a>
+      </nav>
+    </div>
+
+    <div class="col">
+      <span class="label">CONTACT</span>
+      <div class="links">
+        <!-- Update email once your domain is set up -->
+        <a href="mailto:richard@nemethr.dev" class="mono small">richard@nemethr.dev</a>
+        <!-- Replace with your actual Upwork profile URL -->
+        <a href="https://www.upwork.com/freelancers/~" class="mono small" target="_blank" rel="noopener noreferrer">
+          UPWORK ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="col right">
+      <span class="label">© 2025 RICHARD NEMETH</span>
+      <span class="mono small muted">ALL RIGHTS RESERVED.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0;
+  margin-top: auto;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.logo-text {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+
+nav, .links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+nav a, .links a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+nav a:hover, .links a:hover {
+  color: var(--fg);
+}
+
+.small {
+  font-size: 0.75rem;
+  line-height: 1.75;
+}
+
+.right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 2rem;
+  }
+  .right { text-align: left; }
+}
+
+@media (max-width: 480px) {
+  .inner { grid-template-columns: 1fr; }
+}
+</style>

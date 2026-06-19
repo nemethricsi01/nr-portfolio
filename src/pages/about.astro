@@ -1,0 +1,298 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const experience = [
+  {
+    period: '2022 — PRESENT',
+    role: 'Embedded Systems Engineer',
+    org: 'Freelance / Consulting',
+    desc: 'End-to-end embedded product development for industrial and IoT clients. PCB design from schematic to layout, firmware in C/C++ on STM32/ESP32/NXP platforms, hardware bring-up, and manufacturing support.',
+    tags: ['STM32', 'ESP32', 'NXP S32K', 'PCB Design', 'FreeRTOS', 'CAN bus'],
+  },
+  // Add more experience entries here
+];
+
+const skills: Record<string, string[]> = {
+  'MCU Platforms': ['STM32', 'ESP32', 'NXP S32K', 'AVR', 'RP2040'],
+  'Software':      ['C / C++', 'FreeRTOS', 'Zephyr RTOS', 'Python', 'Git'],
+  'EDA Tools':     ['KiCad', 'Altium Designer', 'LTspice'],
+  'Protocols':     ['CAN / CAN FD', 'SPI', 'I2C', 'UART', 'USB', 'Modbus'],
+  'Test & Debug':  ['JTAG / SWD', 'Oscilloscope', 'Logic Analyzer', 'CANalyzer'],
+};
+---
+
+<BaseLayout
+  title="About — Richard Nemeth"
+  description="About Richard Nemeth, embedded systems engineer based in Budapest, Hungary."
+>
+  <div class="breadcrumb ruled-bottom">
+    <div class="wrap">
+      <span class="label">
+        <a href="/">HOME</a> / ABOUT
+      </span>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <section class="intro">
+    <div class="wrap intro-inner">
+      <div class="intro-body">
+        <h1>ABOUT.</h1>
+        <div class="accent-line"></div>
+        <p class="body-text">
+          I'm Richard Nemeth, an embedded systems engineer based in Budapest,
+          Hungary. I specialise in the full hardware product development cycle —
+          from initial architecture and schematic design through PCB layout,
+          firmware development, and manufacturing support.
+        </p>
+        <p class="body-text">
+          With a focus on reliability and clean engineering, I work with
+          industrial, automotive, and IoT clients to build robust electronic
+          products that perform in the real world.
+        </p>
+        <div class="contact-row">
+          <!-- Update with your actual email once domain is active -->
+          <a href="mailto:richard@nemethr.dev" class="label contact-link">
+            richard@nemethr.dev ↗
+          </a>
+          <!-- Replace with your real Upwork URL -->
+          <a
+            href="https://www.upwork.com/freelancers/~"
+            class="label contact-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            UPWORK ↗
+          </a>
+        </div>
+      </div>
+
+      <aside class="intro-meta mono">
+        <div class="meta-group">
+          <span class="label">LOCATION</span>
+          <span>Budapest, Hungary</span>
+        </div>
+        <div class="meta-group">
+          <span class="label">FOCUS</span>
+          <span>Embedded Systems<br />PCB Design<br />Firmware</span>
+        </div>
+        <div class="meta-group">
+          <span class="label">STANDARDS</span>
+          <span>IPC<br />ISO 9001</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section ruled-top">
+    <div class="wrap">
+      <h2 class="section-title label">EXPERIENCE</h2>
+
+      <div class="timeline">
+        {experience.map(item => (
+          <div class="timeline-item">
+            <div class="period label">{item.period}</div>
+            <div class="content">
+              <h3>{item.role}</h3>
+              <p class="org label">{item.org}</p>
+              <p class="item-desc">{item.desc}</p>
+              <div class="tags">
+                {item.tags.map(t => <span class="tag mono">{t}</span>)}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section ruled-top">
+    <div class="wrap">
+      <h2 class="section-title label">SKILLS & TOOLS</h2>
+
+      <div class="skills-grid">
+        {Object.entries(skills).map(([cat, items]) => (
+          <div class="skill-group">
+            <span class="label">{cat}</span>
+            <ul>
+              {items.map(s => <li class="mono">{s}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.breadcrumb { padding: 0.6rem 0; }
+.breadcrumb a { color: var(--muted); }
+
+/* Intro */
+.intro { padding: 4rem 0; }
+
+.intro-inner {
+  display: grid;
+  grid-template-columns: 1fr 18rem;
+  gap: 4rem;
+  align-items: start;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1rem;
+}
+
+.body-text {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  max-width: 52ch;
+  margin-bottom: 1rem;
+  color: var(--fg);
+}
+
+.contact-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+
+.contact-link {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.contact-link:hover { color: var(--accent); }
+
+.intro-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 0.78rem;
+  border-left: 1px solid var(--border-light);
+  padding-left: 2rem;
+  line-height: 1.75;
+}
+
+.meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Sections */
+.section { padding: 3rem 0; }
+
+.section-title {
+  margin-bottom: 2rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: 2rem;
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.timeline-item:last-child {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.period { padding-top: 0.15rem; }
+
+.content h3 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.org {
+  color: var(--accent) !important;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.item-desc {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border-light);
+  color: var(--muted);
+}
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.skill-group {
+  padding: 1.25rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.skill-group .label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.skill-group ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skill-group li {
+  font-size: 0.75rem;
+  color: var(--fg);
+}
+
+.skill-group li::before {
+  content: '> ';
+  color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .intro-inner { grid-template-columns: 1fr; }
+  .intro-meta {
+    border-left: none;
+    border-top: 1px solid var(--border-light);
+    padding-left: 0;
+    padding-top: 1.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .timeline-item { grid-template-columns: 1fr; gap: 0.4rem; }
+  .skills-grid   { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .skills-grid { grid-template-columns: 1fr; }
+}
+</style>

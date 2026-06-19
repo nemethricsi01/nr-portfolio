@@ -1,0 +1,246 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(p => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+const statusColors: Record<string, string> = {
+  PRODUCTION:  '#2C7E50',
+  TESTING:     '#D4840C',
+  DEVELOPMENT: '#1F4B8A',
+  PROTOTYPE:   '#7C7268',
+};
+const statusColor = statusColors[project.data.status] ?? '#7C7268';
+---
+
+<BaseLayout
+  title={`${project.data.title} — Richard Nemeth`}
+  description={project.data.summary}
+>
+  <div class="breadcrumb ruled-bottom">
+    <div class="wrap">
+      <span class="label">
+        <a href="/">HOME</a> / <a href="/projects">PROJECTS</a> / {project.data.title.toUpperCase()}
+      </span>
+    </div>
+  </div>
+
+  <article>
+    <header class="proj-header">
+      <div class="wrap header-inner">
+        <div class="header-main">
+          <p class="meta-top mono label">
+            <span>{project.data.platform}</span>
+            <span class="sep">·</span>
+            <span style={`color: ${statusColor}`}>{project.data.status}</span>
+            <span class="sep">·</span>
+            <span>{project.data.date}</span>
+          </p>
+          <h1>{project.data.title}</h1>
+          <div class="accent-line"></div>
+          <p class="summary">{project.data.summary}</p>
+        </div>
+
+        <aside class="spec-table mono">
+          <div class="spec-row">
+            <span class="label">PLATFORM</span>
+            <span>{project.data.platform}</span>
+          </div>
+          <div class="spec-row">
+            <span class="label">STATUS</span>
+            <span style={`color: ${statusColor}`}>{project.data.status}</span>
+          </div>
+          <div class="spec-row">
+            <span class="label">DATE</span>
+            <span>{project.data.date}</span>
+          </div>
+          <div class="spec-row spec-tags">
+            <span class="label">TAGS</span>
+            <div class="tags">
+              {project.data.tags.map(t => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <div class="content-wrap ruled-top">
+      <div class="wrap">
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="back-nav ruled-top">
+    <div class="wrap">
+      <a href="/projects" class="back label">← BACK TO PROJECTS</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+.breadcrumb { padding: 0.6rem 0; }
+.breadcrumb a { color: var(--muted); }
+
+/* Header */
+.proj-header { padding: 4rem 0; }
+
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr 22rem;
+  gap: 4rem;
+  align-items: start;
+}
+
+.meta-top { margin-bottom: 1rem; }
+.sep { color: var(--border-light); margin: 0 0.25rem; }
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+.summary {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+/* Spec table */
+.spec-table {
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  gap: 1rem;
+  align-items: start;
+}
+
+.spec-row:last-child { border-bottom: none; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+.tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--border-light);
+  color: var(--muted);
+}
+
+/* Content */
+.content-wrap { padding: 3rem 0 4rem; }
+
+.prose {
+  max-width: 72ch;
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+.prose :global(h2) {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 2.5rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.prose :global(h3) {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.prose :global(p) { margin-bottom: 1rem; }
+
+.prose :global(ul),
+.prose :global(ol) {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.prose :global(li) { margin-bottom: 0.3rem; }
+
+.prose :global(code) {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: rgba(26, 26, 26, 0.06);
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--border-light);
+}
+
+.prose :global(pre) {
+  background: var(--fg);
+  color: var(--bg);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.prose :global(pre code) {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.prose :global(img) {
+  border: 1px solid var(--border-light);
+  margin: 1.75rem 0;
+}
+
+.prose :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.prose :global(th) {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+  letter-spacing: 0.06em;
+}
+
+.prose :global(td) {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* Back nav */
+.back-nav { padding: 1.25rem 0; }
+
+.back {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.back:hover { color: var(--fg); }
+
+@media (max-width: 900px) {
+  .header-inner { grid-template-columns: 1fr; }
+}
+</style>
