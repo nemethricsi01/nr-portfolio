@@ -10,6 +10,7 @@ const projects = defineCollection({
     tags: z.array(z.string()),
     summary: z.string(),
     featured: z.boolean().default(false),
+    model: z.string().optional(),
   }),
 });
 
