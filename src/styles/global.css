@@ -98,5 +98,5 @@ h1 {
   margin-bottom: 1.25rem;
 }
 
-.ruled-top    { border-top: 1px solid var(--border); }
-.ruled-bottom { border-bottom: 1px solid var(--border); }
+.ruled-top    { border-top: var(--wire); }
+.ruled-bottom { border-bottom: var(--wire); }
