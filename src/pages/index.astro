@@ -50,22 +50,22 @@ const featured = allProjects.filter(p => p.data.featured).slice(0, 3);
   <section class="services">
     <div class="wrap">
       <div class="services-grid">
-        <div class="service">
+        <div class="service svc-1">
           <span class="mono idx">01</span>
           <h3>PCB DESIGN</h3>
           <p class="muted">Schematic design, PCB layout, DFM, signal integrity</p>
         </div>
-        <div class="service">
+        <div class="service svc-2">
           <span class="mono idx">02</span>
           <h3>FIRMWARE DEVELOPMENT</h3>
           <p class="muted">Embedded C/C++, drivers, RTOS, bootloaders</p>
         </div>
-        <div class="service">
+        <div class="service svc-3">
           <span class="mono idx">03</span>
           <h3>HARDWARE DEVELOPMENT</h3>
           <p class="muted">System architecture, component selection, prototyping</p>
         </div>
-        <div class="service">
+        <div class="service svc-4">
           <span class="mono idx">04</span>
           <h3>CONSULTING</h3>
           <p class="muted">Architecture review, technical audit, product strategy</p>
@@ -227,26 +227,72 @@ h1 {
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border);
-  border-left: 1px solid var(--border);
+  gap: 1px;
+  background: rgba(24,20,16,0.25);
 }
 
 .service {
-  padding: 1.75rem 1.5rem;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  padding: 1.75rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 0;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Colored top bar */
+.service::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--svc);
+}
+
+
+.svc-1 { --svc: #D4840C; }
+.svc-2 { --svc: #1F4B8A; }
+.svc-3 { --svc: #D4840C; }
+.svc-4 { --svc: #1F4B8A; }
+
 .idx {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 300;
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--border-light);
-  margin-bottom: 1.25rem;
+  color: var(--svc);
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+/* Triangle */
+.svc-1 .idx {
+  width: 5.2rem;
+  height: 5.2rem;
+  background: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><polygon points='40,2 79,78 1,78' fill='none' stroke='%23D4840C' stroke-width='1.5'/></svg>") center/contain no-repeat;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+/* Square */
+.svc-2 .idx,
+.svc-3 .idx {
+  border: 1px solid var(--svc);
+  width: 5rem;
+  height: 5rem;
+}
+
+/* Circle */
+.svc-4 .idx {
+  border: 1px solid var(--svc);
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
 }
 
 .service h3 {
@@ -257,7 +303,7 @@ h1 {
 }
 
 .service p {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   line-height: 1.6;
 }
 
