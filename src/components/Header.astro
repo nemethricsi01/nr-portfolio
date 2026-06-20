@@ -1,8 +1,8 @@
 ---
 const nav = [
-  { href: '/about',    label: '01 ABOUT'    },
-  { href: '/projects', label: '02 PROJECTS' },
-  { href: '/#contact', label: '03 CONTACT'  },
+  { href: '/about',    label: 'ABOUT'    },
+  { href: '/projects', label: 'PROJECTS' },
+  { href: '/#contact', label: 'CONTACT'  },
 ];
 
 const path = Astro.url.pathname;
@@ -59,9 +59,10 @@ header {
 }
 
 .logo svg {
-  height: 30px;
-  width: 30px;
+  height: 36px;
+  width: 36px;
   display: block;
+  transform: translateY(-4px);
 }
 
 nav {
@@ -72,9 +73,9 @@ nav {
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.45em;
+  color: var(--fg);
   transition: color 0.15s;
 }
 
