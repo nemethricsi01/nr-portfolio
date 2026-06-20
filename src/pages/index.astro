@@ -12,7 +12,10 @@ const featured = allProjects.filter(p => p.data.featured).slice(0, 3);
   <section class="hero">
     <div class="wrap">
       <div class="hero-top">
-        <h1>RICHARD<br />NEMETH.</h1>
+        <div class="hero-name">
+          <h1>RICHARD<br />NEMETH.</h1>
+          <p class="discipline label">HARDWARE / FIRMWARE / PCB</p>
+        </div>
         <div class="hero-photo-wrap">
           <img src="/ft_cv.png" alt="Richard Nemeth" />
         </div>
@@ -105,37 +108,28 @@ const featured = allProjects.filter(p => p.data.featured).slice(0, 3);
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(3rem - 1px),
-    rgba(24, 20, 16, 0.05) calc(3rem - 1px),
-    rgba(24, 20, 16, 0.05) 3rem
-  );
-  pointer-events: none;
-}
 
 .hero .wrap { position: relative; }
 
 .hero-top {
   display: grid;
   grid-template-columns: 3fr 2fr;
-  align-items: start;
+  align-items: center;
   gap: 3rem;
   margin-bottom: 1rem;
 }
 
 h1 {
-  font-size: clamp(2.5rem, 9vw, 7rem);
+  font-size: clamp(3rem, 11vw, 9rem);
   font-weight: normal;
   line-height: 1.2;
   letter-spacing: 0.04em;
   margin-bottom: 0;
 }
+
+.hero-name { display: flex; flex-direction: column; }
+
+.discipline { margin-top: 1.25rem; font-size: 0.85rem; }
 
 /* Bauhaus offset photo */
 .hero-photo-wrap {
