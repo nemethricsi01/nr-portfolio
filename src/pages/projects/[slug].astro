@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await project.render();
+const hasModel = !!project.data.model;
 
 const statusColors: Record<string, string> = {
   PRODUCTION:  '#2C7E50',
@@ -26,6 +27,11 @@ const statusColor = statusColors[project.data.status] ?? '#7C7268';
   title={`${project.data.title} — Richard Nemeth`}
   description={project.data.summary}
 >
+  {hasModel && (
+    <Fragment slot="head">
+      <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    </Fragment>
+  )}
   <div class="breadcrumb ruled-bottom">
     <div class="wrap">
       <span class="label">
@@ -72,6 +78,23 @@ const statusColor = statusColors[project.data.status] ?? '#7C7268';
         </aside>
       </div>
     </header>
+
+    {project.data.model && (
+      <div class="viewer-wrap ruled-top">
+        <div class="wrap">
+          <model-viewer
+            src={project.data.model}
+            alt={`3D model of ${project.data.title}`}
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="1000"
+            rotation-per-second="20deg"
+            environment-image="neutral"
+            shadow-intensity="0.6"
+          ></model-viewer>
+        </div>
+      </div>
+    )}
 
     <div class="content-wrap ruled-top">
       <div class="wrap">
@@ -228,6 +251,22 @@ h1 {
 .prose :global(td) {
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border-light);
+}
+
+/* 3D viewer */
+.viewer-wrap { padding: 2rem 0; }
+
+model-viewer {
+  width: 100%;
+  height: 480px;
+  background: rgba(24, 20, 16, 0.03);
+  border: var(--wire);
+  --progress-bar-color: var(--accent);
+  --progress-mask: none;
+}
+
+@media (max-width: 640px) {
+  model-viewer { height: 320px; }
 }
 
 /* Back nav */
